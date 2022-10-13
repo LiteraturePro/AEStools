@@ -56,15 +56,6 @@ export default {
     
 }
 
-    // import CryptoJS from './js/utils'
-    //  let a = CryptoJS.encrypt("asdfg123456")
-    //  let b = CryptoJS.decrypt(a)
-    //  console.log(a);
-    //  console.log(b);
-   
-
-
-
 </script>
 <style scoped>
 </style>

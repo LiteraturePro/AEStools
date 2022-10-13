@@ -2,6 +2,10 @@
  * 工具类
  */
  import CryptoJS from 'crypto-js'
+ import crypto  from 'crypto-js';
+
+ // 加密解密密钥
+ var key = 'mJ1UgOlgiuSfK5ALfQFLSV78vpr9uGJH'
  export default {
     //加密
    encrypt1(word, keyStr){ 
@@ -67,6 +71,32 @@
       padding: CryptoJS.pad.ZeroPadding
     });
     return decrypt.toString(CryptoJS.enc.Utf8);
+  },
+  encrypts(data){
+    iv = iv || "";
+    var clearEncoding = 'utf8';
+    var cipherEncoding = 'base64';
+    var cipherChunks = [];
+    var cipher = crypto.createCipheriv('aes-256-ecb', key, iv);
+    cipher.setAutoPadding(true);
+    cipherChunks.push(cipher.update(data, clearEncoding, cipherEncoding));
+    cipherChunks.push(cipher.final(cipherEncoding));
+    return "dgcsb2021@"+cipherChunks.join('');
+  },
+  decrypts(data){
+    if (!data) {
+        return "";
+    }
+    iv = iv || "";
+    var clearEncoding = 'utf8';
+    var cipherEncoding = 'base64';
+    var cipherChunks = [];
+    var decipher = crypto.createDecipheriv('aes-256-ecb', key, iv);
+    decipher.setAutoPadding(true);
+    
+    cipherChunks.push(decipher.update(data.split('@')[1], cipherEncoding, clearEncoding));
+    cipherChunks.push(decipher.final(clearEncoding));
+    return cipherChunks.join('');
   }
  
  }
