@@ -6,6 +6,7 @@
 
  // 加密解密密钥
  var key = 'mJ1UgOlgiuSfK5ALfQFLSV78vpr9uGJH'
+ var iv =''
  export default {
     //加密
    encrypt1(word, keyStr){ 
