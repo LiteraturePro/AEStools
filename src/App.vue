@@ -41,14 +41,14 @@ export default {
     },
     jiami(){
       console.log("加密-----",this.data1);
-      let a = CryptoJS.encrypt1(this.data1)
+      let a = CryptoJS.encrypts(this.data1)
     
       console.log(a)
       this.data2= a
     },
     jiemi(){
         console.log("解密-----",this.data1);
-        let b = CryptoJS.decrypt1(this.data1)
+        let b = CryptoJS.decrypts(this.data1)
         console.log(b)
         this.data2= b
     }
