@@ -24,7 +24,7 @@ jobs:
           node-version: '14'
           
       - name: Build frontend
-        run: yarn build
+        run: yarn install && yarn build
         
       - name: Deploy app
         run:  mv fly.toml ./dist && cd dist && flyctl deploy --remote-only
