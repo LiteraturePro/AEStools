@@ -48,6 +48,7 @@ export default {
     },
     jiami(){
       console.log("加密-----",this.data1);
+      // https://faas-sgp1-18bc02ac.doserverless.co/api/v1/web/fn-13123800-65d0-4953-862f-becc2dd468d9/crypto/aes
       let a = axios.post('https://58004b9d60dc41389986626267835cb4.apig.ap-southeast-1.huaweicloudapis.com/aes?responseType=json&cryptType=en&cryptdata='+this.data1+'', {
       })
       .then(function (response) {
