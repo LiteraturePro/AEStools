@@ -18,7 +18,8 @@ export function requestService(config) {
     })
 
     // 响应拦截器
-    service.interceptors.response.use(res => {
+    service.interceptors.response.use(
+        res => {
             console.log(res)
         },
         error => {

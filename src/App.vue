@@ -17,6 +17,7 @@
 </template>
 <script>
 import {requestService} from './js/request'
+import axios from 'axios'
 export default {
   data() {
     return {
@@ -41,22 +42,23 @@ export default {
     },
     jiami(){
       console.log("加密-----",this.data1);
-      let data={
-        'responseType':'json',
-        'cryptType':'en',
-        'cryptdata':'19825085100'
-      }
-      let a = requestService({
-        url: '',
-        method: 'post',
-        data: data,
-        transformRequest: [function(data) {
-          console.log(data);
-            return data
-        }]
+      let a = axios.post('https://58004b9d60dc41389986626267835cb4.apig.ap-southeast-1.huaweicloudapis.com/aes?responseType=json&cryptType=en&cryptdata='+this.data1+'', {
       })
-      console.log(a)
-      this.data2= a
+      .then(function (response) {
+        return response.data.key
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+      var that = this;
+      a.then((result) => {
+        that.data2= result
+
+        console.log("result", result);
+      })
+      
+
+      
     },
     jiemi(){
         console.log("解密-----",this.data1);
