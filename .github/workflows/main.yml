@@ -22,13 +22,9 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: '14'
-      - name: Install dependencies
-        if: steps.yarn-cache.outputs.cache-hit != 'true'
-        run: yarn --frozen-lockfile
-        
+          
       - name: Build frontend
         run: yarn build
         
       - name: Deploy app
-      - uses: superfly/flyctl-actions/setup-flyctl@master
-      - run:  mv fly.toml ./dist && cd dist && flyctl deploy --remote-only
+        run:  mv fly.toml ./dist && cd dist && flyctl deploy --remote-only
