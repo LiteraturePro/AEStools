@@ -3,6 +3,7 @@
 
 <template>
 
+<h1>身份证、手机号加解密工具</h1>
 <div>
     <el-input v-model="data1" placeholder="请输入明文或者密文" clearable></el-input>
 
@@ -16,7 +17,6 @@
 </div>
 </template>
 <script>
-import {requestService} from './js/request'
 import axios from 'axios'
 export default {
   data() {
@@ -53,8 +53,6 @@ export default {
       var that = this;
       a.then((result) => {
         that.data2= result
-
-        console.log("result", result);
       })
       
 
@@ -62,9 +60,18 @@ export default {
     },
     jiemi(){
         console.log("解密-----",this.data1);
-        let b ="12345"
-        console.log(b)
-        this.data2= b
+        let b = axios.post('https://58004b9d60dc41389986626267835cb4.apig.ap-southeast-1.huaweicloudapis.com/aes?responseType=json&cryptType=de&cryptdata='+this.data1+'', {
+          })
+          .then(function (response) {
+            return response.data.key
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+          var that = this;
+          b.then((result) => {
+            that.data2= result
+          })
     }
   }
     
