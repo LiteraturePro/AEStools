@@ -7,7 +7,105 @@
     <title>Vite App</title>
   </head>
   <body>
+    <div class="container">
+      <div class="row">
+        <h3>word 转 html代码段</h3>
+        <input id="document" type="file" />
+        <div class="row" style="width: 100%">
+          <div class="span8">
+            <div id="output" class="well"></div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <h3>appId,redirectUrl加解密</h3>
+        <textarea id="before" style="width: 100%; height: 100px"></textarea>
+        <button onclick="encrypt()">加密</button>
+        <button onclick="decrypt()">解密</button>
+        <textarea
+          id="after"
+          style="width: 100%; height: 100px"
+          readonly
+        ></textarea>
+      </div>
+    </div>
     <div id="app"></div>
     <script type="module" src="/src/main.js"></script>
+    <script src="https://cdn.bootcss.com/mammoth/1.4.8/mammoth.browser.js"></script>
   </body>
+  <script type="text/javascript">
+      document
+        .getElementById("document")
+        .addEventListener("change", readFileInputEventAsArrayBuffer, false);
+
+      function displayResult(result) {
+        console.log(result);
+        let html = result.value;
+        let newHTML = html
+          .replace(//g, "")
+          .replace("<h1>", '<h1 style="text-align: center;">')
+          .replace(/<table>/g, '<table style="border-collapse: collapse;">')
+          .replace(/<tr>/g, '<tr style="height: 30px;">')
+          .replace(/<td>/g, '<td style="border: 1px solid pink;">')
+          .replace(/<p>/g, '<p style="text-indent: 2em;">');
+        document.getElementById("output").innerHTML = newHTML;
+        downloadFile(newHTML, "html");
+      }
+
+      function readFileInputEventAsArrayBuffer(event) {
+        var file = event.target.files[0];
+        var reader = new FileReader();
+
+        reader.onload = function (loadEvent) {
+          var arrayBuffer = loadEvent.target.result; // arrayBuffer
+          mammoth
+            .convertToHtml({ arrayBuffer: arrayBuffer })
+            .then(displayResult)
+            .done();
+        };
+
+        reader.readAsArrayBuffer(file);
+      }
+
+      function downloadFile(data, name) {
+        var ele = document.createElement("a");
+        var filename = "data." + name;
+        ele.download = filename;
+        ele.style.display = "none";
+        var blob = new Blob([JSON.stringify(data)]);
+        ele.href = URL.createObjectURL(blob);
+        document.body.appendChild(ele);
+        ele.click();
+        document.body.removeChild(ele);
+      }
+    </script>
+    <script type="text/javascript">
+      var before = document.getElementById("before");
+      var after = document.getElementById("after");
+
+      function compile(code) {
+        var c = String.fromCharCode(code.charCodeAt(0) + code.length);
+        for (var i = 1; i < code.length; i++) {
+          c += String.fromCharCode(code.charCodeAt(i) + code.charCodeAt(i - 1));
+        }
+        return escape(c);
+      }
+
+      function uncompile(code) {
+        code = unescape(code);
+        var c = String.fromCharCode(code.charCodeAt(0) - code.length);
+        for (var i = 1; i < code.length; i++) {
+          c += String.fromCharCode(code.charCodeAt(i) - c.charCodeAt(i - 1));
+        }
+        return c;
+      }
+
+      function encrypt() {
+        after.value = compile(before.value)
+      }
+
+      function decrypt() {
+        after.value = uncompile(before.value)
+      }
+    </script>
 </html>
