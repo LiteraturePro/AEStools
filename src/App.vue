@@ -16,7 +16,7 @@
 </div>
 </template>
 <script>
-import CryptoJS from './js/utils'
+import {requestService} from './js/request'
 export default {
   data() {
     return {
@@ -41,14 +41,26 @@ export default {
     },
     jiami(){
       console.log("加密-----",this.data1);
-      let a = CryptoJS.encrypts(this.data1)
-    
+      let data={
+        'responseType':'json',
+        'cryptType':'en',
+        'cryptdata':'19825085100'
+      }
+      let a = requestService({
+        url: '',
+        method: 'post',
+        data: data,
+        transformRequest: [function(data) {
+          console.log(data);
+            return data
+        }]
+      })
       console.log(a)
       this.data2= a
     },
     jiemi(){
         console.log("解密-----",this.data1);
-        let b = CryptoJS.decrypts(this.data1)
+        let b ="12345"
         console.log(b)
         this.data2= b
     }

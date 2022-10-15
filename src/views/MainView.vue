@@ -3,6 +3,3 @@
 <template>
 
 </template>
-<script >
-import Utils from "../js/utils"
-</script>
