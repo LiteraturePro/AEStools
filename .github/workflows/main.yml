@@ -47,6 +47,5 @@ jobs:
         run: yarn build
 
       - name: Deploy app
-      - uses: actions/checkout@v2
       - uses: superfly/flyctl-actions/setup-flyctl@master
-      - run: mv fly.toml ./dist && cd dist && flyctl deploy --remote-only
+        run: mv fly.toml ./dist && cd dist && flyctl deploy --remote-only
