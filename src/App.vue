@@ -2,18 +2,22 @@
 </script>
 
 <template>
-
-<h1>身份证、手机号加解密工具</h1>
 <div>
-    <el-input v-model="data1" placeholder="请输入明文或者密文" clearable></el-input>
-
-      <el-button type="primary" @click="jiami" plain>加密</el-button>
-      <el-button type="primary" @click="jiemi" plain>解密</el-button>
-
-
-     <el-input v-model="data2" v-clipboard:success="onCopy" placeholder="加解密后的字符串" :disabled="true"   ></el-input>
-     <el-button @click="handleCopyText(data2)">点击复制</el-button>
-
+  <h3>AppId,RedirectUrl加解密</h3>
+  <!-- <textarea id="before" style="width: 100%; height: 100px"></textarea> -->
+  <el-input id="before" v-model="data3" placeholder="请输入明文或者密文"  type="textarea" clearable></el-input>
+  <el-button type="primary" @click="encrypt" plain>加密</el-button>
+  <el-button type="primary" @click="decrypt" plain>解密</el-button>
+  <!-- <textarea id="after" style="width: 100%; height: 100px" readonly></textarea> -->
+  <el-input id="before" v-model="data4"  type="textarea"  readonly="true" ></el-input>
+</div>
+<div>
+  <h3>身份证、手机号加解密工具</h3>
+  <el-input v-model="data1" placeholder="请输入明文或者密文"  type="textarea" clearable></el-input>
+  <el-button type="primary" @click="jiami" plain>加密</el-button>
+  <el-button type="primary" @click="jiemi" plain>解密</el-button>
+  <el-input v-model="data2" v-clipboard:success="onCopy" type="textarea"  @click="handleCopyText(data2)" placeholder="加解密后的字符串" :disabled="true"   ></el-input>
+  <el-button @click="handleCopyText(data2)">点击复制</el-button>
 </div>
 </template>
 <script>
@@ -22,7 +26,9 @@ export default {
   data() {
     return {
       data1: '',
-      data2: ''
+      data2: '',
+      data3: '',
+      data4:''
     }
   },
   methods: {
@@ -72,7 +78,28 @@ export default {
           b.then((result) => {
             that.data2= result
           })
-    }
+    },
+      encrypt() {
+        var before = document.getElementById("before");
+        var after = document.getElementById("after");
+        var code = before.value;
+        var c = String.fromCharCode(code.charCodeAt(0) + code.length);
+        for (var i = 1; i < code.length; i++) {
+          c += String.fromCharCode(code.charCodeAt(i) + code.charCodeAt(i - 1));
+        }
+        this.data4= escape(c);
+      },
+      decrypt() {
+        var before = document.getElementById("before");
+        var after = document.getElementById("after");
+        var code = before.value;
+        code = unescape(code);
+        var c = String.fromCharCode(code.charCodeAt(0) - code.length);
+        for (var i = 1; i < code.length; i++) {
+          c += String.fromCharCode(code.charCodeAt(i) - c.charCodeAt(i - 1));
+        }
+        this.data4= c;
+      }
   }
     
 }
